@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="onedfinal" board="Alchitry Au" language="Lucid" version="3">
+  <files>
+    <component>reset_conditioner.luc</component>
+    <src>player.luc</src>
+    <src>fixedinput.luc</src>
+    <src top="true">au_top.luc</src>
+    <src>collision_detect.luc</src>
+    <src>scorebase.luc</src>
+    <src>wall.luc</src>
+    <src>seven_seg.luc</src>
+    <src>game.luc</src>
+    <constraint>userconstraints.acf</constraint>
+    <constraint lib="true">au.xdc</constraint>
+    <constraint lib="true">alchitry.acf</constraint>
+  </files>
+</project>

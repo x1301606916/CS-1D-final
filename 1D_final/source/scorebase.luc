@@ -1,0 +1,18 @@
+module scorebase (
+    input score[16],
+    output scorea[4],
+    output scoreb[4],
+    output scorec[4],
+    output scored[4]
+  ) {
+
+  always {
+    scored=score-(score/ b01010*b01010);
+    
+    scorec=(score-(score/b01100100*b01100100))/b01010;
+    
+    scoreb=(score-(score/b01111101000*b01111101000))/b01100100;
+    
+    scorea=score/b01111101000;
+  }
+}

@@ -1,0 +1,147 @@
+module game (
+    input clk,  // clock
+    input start_end_raw,
+    input left_raw,
+    input right_raw,
+    output player_location[8],
+    output walla[8],
+    output wallb[8],
+    output wallc[8],
+    output walld[8],
+    output walle[8],
+    output wallf[8],
+    output wallg[8],
+    output scorea[7],
+    output scoreb[7],
+    output scorec[7],
+    output scored[7]
+  ) {
+    .clk(clk) {
+      dff savedscore[16];
+      dff state[2];
+      dff wallspeed[16];
+      dff switching_time[35];
+    
+  }
+  fixedinput left;
+  fixedinput right;
+  fixedinput start_end;
+  scorebase convert_score;
+  collision_detect iscollide;
+  player player;
+  wall wall;
+  
+  seven_seg sega;
+  seven_seg segb;
+  seven_seg segc;
+  seven_seg segd;
+  
+
+  always {
+    left.inputnumber=left_raw;
+    left.on_running=b1;
+    left.clk=clk;
+    
+    right.inputnumber=right_raw;
+    right.on_running=b1;
+    right.clk=clk;
+    
+    start_end.inputnumber=start_end_raw;
+    start_end.on_running=b1;
+    start_end.clk=clk;
+    
+    convert_score.score=savedscore.q;
+    
+    player.clk=clk;
+    player.moveleft=left.out;
+    player.moveright=right.out;
+    
+    wall.clk=clk;
+    wall.speed=wallspeed.q;
+    
+    iscollide.userbits=player.out;
+    iscollide.wallbits=wall.lineg;
+    
+    
+    case (state.q[1:0]){
+    
+      b00://not start, wait for input.
+        player.on_running=b0;
+        wall.onrunning=b0;
+        if(start_end.out==b1){
+          
+          state.d=b01;//go to game state
+        }
+        else{
+          state.d=b00;
+        }
+      b01://game state
+        player.on_running=b1;
+        wall.onrunning=b1;
+        
+        savedscore.d=savedscore.q+wall.score;
+        
+        //collide then game over
+        if (iscollide.out==b1){
+          state.d=b10;
+          switching_time.d=b0;
+          wallspeed.d=b0;   
+          }
+        else{
+          state.d=b01;
+          
+          //speedup after some time
+          if(switching_time.q[34]==b1){
+            switching_time.d=b0;
+            wallspeed.d=wallspeed.q+1;
+            }
+          else{
+            switching_time.d=switching_time.q+1;
+            wallspeed.d=wallspeed.q; 
+           }
+        
+        }
+      b10:
+        player.on_running=b0;
+        wall.onrunning=b0;
+        if(switching_time.q[28]==b1){
+            switching_time.d=b0;
+            wallspeed.d=b0;
+            state.d=b00;
+            savedscore.d=b0;
+            }
+        //display score for some time.
+        else{
+          state.d=b10;
+          switching_time.d=switching_time.q+1;
+          }
+        
+      b11://unused state.
+        player.on_running=b0;
+        wall.onrunning=b0;
+      default:
+        player.on_running=b0;
+        wall.onrunning=b0;
+    }
+    
+    player_location=player.out;
+    walla=wall.linea;
+    wallb=wall.lineb;
+    wallc=wall.linec;
+    walld=wall.lined;
+    walle=wall.linee;
+    wallf=wall.linef;
+    wallg=wall.lineg;
+    
+    sega.char=convert_score.scorea;
+    segb.char=convert_score.scoreb;
+    segc.char=convert_score.scorec;
+    segd.char=convert_score.scored;
+    
+    scorea=sega.segs;
+    scoreb=segb.segs;
+    scorec=segc.segs;
+    scored=segd.segs;
+
+  }
+}

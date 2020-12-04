@@ -1,0 +1,90 @@
+module fixedinput (
+    input clk,  // clock
+    input on_running[1],
+    input inputnumber[1],
+    output out[1]
+  ) {
+    .clk(clk) {
+    dff timeforone[23]; //23 flip-flops to store pressed time
+    dff timeforzero[23];//23 flip-flops to store unpressed time
+    dff state[2];//state
+  }
+
+  always {
+  if (on_running==b1){
+    case (state.q[1:0]){
+      b00://no input,just wait
+      if (inputnumber==b0){
+        state.d=b00;
+        timeforone.d=0;
+        timeforzero.d=0;
+        out=b0;
+          }
+      if(inputnumber==b1){
+        state.d=b01;
+        timeforone.d=0;
+        timeforzero.d=0;
+        out=b0;
+        }
+      b01://cont input
+      if (inputnumber==b0){
+      
+          
+          if (timeforzero.q[22]==1)//enough for 0.1s
+          {
+            out=b0;
+            state.d=b00;//go back to wait
+            timeforone.d=0;
+            timeforzero.d=0;//clean memory
+          }
+          else{
+            out=b0;
+            state.d=b01;
+            timeforone.d=timeforone.q;
+            timeforzero.d=timeforzero.q+1;
+          }
+          
+          }
+      if(inputnumber==b1){
+          
+          if (timeforone.q[22]==1)//enough for 0.1s
+          {
+            out=b1;
+            state.d=b10;//no input allowed in next 0.1s
+            timeforone.d=0;
+            timeforzero.d=0;//clean memory
+          }
+          else{
+            timeforone.d=timeforone.q+1;
+            timeforzero.d=timeforzero.q;
+            out=b0;
+            state.d=b01;
+          }
+        }
+      b10:// mo input allowed state
+      if (timeforzero.q[22]==1)//enough for 0.1s
+          {
+            out=b0;
+            state.d=b00;//go back to wait
+            timeforone.d=0;
+            timeforzero.d=0;//clean memory
+          }
+          else{
+            out=b0;
+            state.d=b10;
+            timeforone.d=0;
+            timeforzero.d=timeforzero.q+1;
+          }
+      b11:out=b0;//unused state
+  }
+  }
+    if(on_running==b0){
+      timeforone.d=0;
+      timeforzero.d=0;
+      state.d=b00;
+      out=b0;
+      
+    }
+    }
+}
+

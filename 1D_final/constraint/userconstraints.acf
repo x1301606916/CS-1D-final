@@ -1,0 +1,40 @@
+pin matrix[0] A28;
+pin matrix[1] A31;
+pin matrix[2] A43;
+pin matrix[3] C8;
+pin matrix[4] A46;
+pin matrix[5] C14;
+pin matrix[6] C17;
+pin matrix[7] A37;
+pin matrix[8] C11;
+pin matrix[9] C20;
+pin matrix[10] C5;
+pin matrix[11] C23;
+pin matrix[12] A40;
+pin matrix[13] C2;
+pin matrix[14] A34;
+pin matrix[15] A49;
+
+//pin io_button[0] B28 pulldown;
+//pin io_button[1] B27 pulldown;
+//pin io_button[2] B23 pulldown;
+//pin io_button[3] B24 pulldown;
+//pin io_button[4] C49 pulldown;
+
+pin left_button B30 pulldown;
+pin reset_button B33 pulldown;
+pin right_button B36 pulldown;
+
+//pin score[7] B9;
+//pin score[6] B30;
+//pin score[5] B33;
+//pin score[4] B21;
+//pin score[3] B18;
+//pin score[2] B12;
+//pin score[1] B42;
+//pin score[0] B39;
+
+//pin ground B36;
+
+
+

@@ -1,0 +1,49 @@
+module player (
+    input clk,  // clock
+    input on_running,
+    input moveleft,
+    input moveright,
+    output out[8]
+  ) {
+  .clk(clk) {
+    dff playerlocation[8]; //8 flip-flops to store player
+    dff state[1];//state
+  }
+
+  always {
+    if (on_running==b1){
+      case(state.q[0]){
+        b0:
+          state.d=b1;
+          playerlocation.d=b00001000;
+        b1:
+          if(moveleft==b1){
+            if(playerlocation.q==b10000000){
+              playerlocation.d=playerlocation.q;
+            }
+            else{
+              playerlocation.d=playerlocation.q*2;
+              }
+          }
+          else{
+            if(moveright==b1){
+              if(playerlocation.q==b00000001){
+                playerlocation.d=playerlocation.q;
+              }
+              else{
+                playerlocation.d=playerlocation.q/2;
+                }            
+            }
+            else{
+              playerlocation.d=playerlocation.q;
+            }
+          }
+        }
+      }
+    if (on_running==b0){
+      playerlocation.d=0;
+      state.d=b0;
+      }
+    out=playerlocation.q;
+  }
+}

@@ -1,0 +1,11 @@
+module collision_detect (
+    input userbits[8],
+    input wallbits[8],
+    output out
+  ) {
+
+  always {
+    out= (userbits[0] & wallbits[0]) | (userbits[1] & wallbits[1]) | (userbits[2] & wallbits[2]) | (userbits[3] & wallbits[3]) | (userbits[4] & wallbits[4]) | (userbits[5] & wallbits[5]) | (userbits[6] & wallbits[6]) | (userbits[7] & wallbits[7]);
+    
+  }
+}

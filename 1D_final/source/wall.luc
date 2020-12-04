@@ -1,0 +1,275 @@
+module wall (
+    input clk,  // clock
+    input onrunning,
+    input speed[16],
+    output linea[8],
+    output lineb[8],
+    output linec[8],
+    output lined[8],
+    output linee[8],
+    output linef[8],
+    output lineg[8],
+    output score
+  ) {
+  .clk(clk) {
+    dff savedcounter[32]; //35 flip-flops to store value of counter
+    dff nextclockcounter[32];
+    dff linea_register[8];
+    dff lineb_register[8];
+    dff linec_register[8];
+    dff lined_register[8];
+    dff linee_register[8];
+    dff linef_register[8];
+    dff lineg_register[8];//registers for wall location
+    
+  }
+
+  always {
+    
+    if (onrunning==1){
+      savedcounter.d=savedcounter.q+speed+1;
+      nextclockcounter.d=savedcounter.q+speed+speed+2;
+      
+      if(savedcounter.q[31:26]!=nextclockcounter.q[31:26]){
+      
+      score=1;
+        
+      lineb_register.d=linea_register.q;
+      linec_register.d=lineb_register.q;
+      lined_register.d=linec_register.q;
+      linee_register.d=lined_register.q;
+      linef_register.d=linee_register.q;
+      lineg_register.d=linef_register.q;
+    case(savedcounter.q[31:26]){
+    
+      b000000:
+        linea_register.d=b00000000;
+
+      b000001:
+        linea_register.d=b00100100;
+
+      b000010:
+        linea_register.d=b11001000;
+
+      b000011:
+        linea_register.d=b10000001;
+        
+      b000100:
+        linea_register.d=b10000010;
+        
+      b000101:
+        linea_register.d=b01011000;
+
+      b000110:
+        linea_register.d=b00100010;
+
+      b000111:
+        linea_register.d=b00001001;
+
+      b001000:
+        linea_register.d=b00000011;
+
+      b001001:
+        linea_register.d=b00000001;
+
+      b001010:
+        linea_register.d=b10100000;
+
+      b001011:
+        linea_register.d=b00001110;
+
+      b001100:
+        linea_register.d=b00100001;
+
+      b001101:
+        linea_register.d=b11000001;
+
+      b001110:
+        linea_register.d=b00100000;
+
+      b001111:
+        linea_register.d=b00011000;
+
+      b010000:
+        linea_register.d=b00010001;
+
+      b010001:
+        linea_register.d=b00111000;
+
+      b010010:
+        linea_register.d=b00000010;
+
+      b010011:
+        linea_register.d=b11100000;
+
+      b010100:
+        linea_register.d=b01000010;
+        
+      b010101:
+        linea_register.d=b00100100;
+        
+      b010110:
+        linea_register.d=b00110001;
+        
+      b010111:
+        linea_register.d=b11000000;
+        
+      b011000:
+        linea_register.d=b01001000;
+        
+      b011001:
+        linea_register.d=b00101000;
+        
+      b011010:
+        linea_register.d=b11000010;
+        
+      b011011:
+        linea_register.d=b0100110;
+        
+      b011100:
+        linea_register.d=b00100001;
+        
+      b011101:
+        linea_register.d=b00110000;
+        
+      b011110:
+        linea_register.d=b01000110;
+      
+      b011111:
+        linea_register.d=b10001000;
+        
+        
+      b100000:
+        linea_register.d=b00000000;
+
+      b100001:
+        linea_register.d=b01100000;
+
+      b100010:
+        linea_register.d=b01010100;
+
+      b100011:
+        linea_register.d=b01000000;
+        
+      b100100:
+        linea_register.d=b01100000;
+        
+      b100101:
+        linea_register.d=b00010000;
+
+      b100110:
+        linea_register.d=b00101010;
+
+      b100111:
+        linea_register.d=b01100000;
+
+      b101000:
+        linea_register.d=b01000101;
+
+      b101001:
+        linea_register.d=b00100100;
+
+      b101010:
+        linea_register.d=b10010000;
+
+      b101011:
+        linea_register.d=b10001000;
+
+      b101100:
+        linea_register.d=b10000100;
+
+      b101101:
+        linea_register.d=b00010001;
+
+      b101110:
+        linea_register.d=b01000010;
+
+      b101111:
+        linea_register.d=b00011000;
+
+      b110000:
+        linea_register.d=b11000000;
+
+      b110001:
+        linea_register.d=b00001100;
+
+      b110010:
+        linea_register.d=b01000001;
+
+      b110011:
+        linea_register.d=b00101000;
+
+      b110100:
+        linea_register.d=b00010010;
+        
+      b110101:
+        linea_register.d=b00001000;
+        
+      b110110:
+        linea_register.d=b01001000;
+        
+      b110111:
+        linea_register.d=b00100010;
+        
+      b111000:
+        linea_register.d=b00010100;
+        
+      b111001:
+        linea_register.d=b11000000;
+        
+      b111010:
+        linea_register.d=b00100100;
+        
+      b111011:
+        linea_register.d=b00010010;
+        
+      b111100:
+        linea_register.d=b01000100;
+        
+      b111101:
+        linea_register.d=b00000100;
+        
+      b111110:
+        linea_register.d=b00101000;
+      
+      b111111:
+        linea_register.d=b00100011;
+
+      }
+        
+      }
+      else{
+      
+        score=0;
+      
+        linea_register.d=linea_register.q;
+        lineb_register.d=lineb_register.q;
+        linec_register.d=linec_register.q;
+        lined_register.d=lined_register.q;
+        linee_register.d=linee_register.q;
+        linef_register.d=linef_register.q;
+        lineg_register.d=lineg_register.q;
+        
+        }
+      
+    }
+    else{
+      score=0;
+      
+      savedcounter.d=0;
+      linea_register.d=0;
+      lineb_register.d=0;
+      linec_register.d=0;
+      lined_register.d=0;
+      linee_register.d=0;
+      linef_register.d=0;
+      lineg_register.d=0;
+    }
+    linea=linea_register.q;
+    lineb=lineb_register.q;
+    linec=linec_register.q;
+    lined=lined_register.q;
+    linee=linee_register.q;
+    linef=linef_register.q;
+    lineg=lineg_register.q;
+}
